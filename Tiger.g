@@ -1,21 +1,114 @@
 grammar Tiger;
+
 options {
-	language = Java;
-	 output = AST;
-}
-@lexer::header {
-package org.meri.antlr_step_by_step.parsers;
+    output=AST;
 }
 
-//as the generated parser will reside in org.meri.antlr_step_by_step.parsers 
-//package, we have to add package declaration on top of it
-@parser::header {
-package org.meri.antlr_step_by_step.parsers;
-}
-ID: (('a'..'z')|('A'..'Z')) (('a'..'z')|('A'..'Z')|('0'..'9')|'_')*;
+/* LEXER RULES */
 
-INTLIT:	('1'..'9')('0'..'9')*;
+/* Reserved Keywords */
+FUNCTION : 'function';
 
-expression : ID;
+BEGIN : 'begin';
+
+END : 'end';
+
+VOID : 'void';
+
+MAIN : 'main';
+
+TYPE : 'type';
+
+ARRAY : 'array';
+
+OF : 'of';
+
+INT : 'int';
+
+FIXEDPT : 'fixedpt';
+
+VAR : 'var';
+
+IF : 'if';
+
+THEN : 'then';
+
+ENDIF : 'endif';
+
+ELSE : 'else';
+
+WHILE : 'while';
+
+DO : 'do';
+
+ENDDO: 'enddo';
+
+FOR : 'for';
+
+ID : 'id';
+
+TO : 'to';
+
+DO : 'do';
+
+BREAK : 'break';
+
+RETURN : 'return';
+
+/* Punctuation Symbols / Binary operators*/
+COMMA : ',';
+
+COLON : ':';
+
+SEMI : ';';
+
+LPAREN : '(';
+
+RPAREN : ')';
+
+LBRACK : '[';
+
+RBRACK : ']';
+
+PLUS : '+';
+
+MINUS : '-';
+
+MULT : '*';
+
+DIV : '/';
+
+EQ : '=';
+ 
+NEQ : '<>';
+
+LESSER : '<';
+
+LESSEREQ : '<=';
+
+GREATER : '>';
+
+GREATEREQ : '>=';
+
+AND : '&';
+
+OR : '|';
+
+ASSIGN ':='; 
+
+/* other lexical rules */
+ID : (('a'..'z')|('A'..'Z')) (('a'..'z')|('A'..'Z')|('0'..'9')|'_')*;
+
+INTLIT : ('1'..'9')('0'..'9')*;
+
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) {$channel=HIDDEN;}
+    ;
+
+/* PARSER RULES */
+eval: ID;
 
 
