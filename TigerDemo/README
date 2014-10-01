@@ -8,6 +8,6 @@ How to use ANTLR from command line:
 
 3) Running the compiled java:
 	on Unix/OSX: java -cp .:antlr.jar ANTLRDemo
-	on windows: java -cp .:antlr.jar ANTLRDemo
+	on windows: java -cp .;antlr.jar ANTLRDemo
 
 If all goes well there should be no output to console/terminal. If there is any output during 3) it means there was a parse error. Check your input and try again.
