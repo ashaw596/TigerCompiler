@@ -1,8 +1,24 @@
 grammar Tiger;
 
 options {
-    output=AST;
+    // antlr will generate java lexer and parser
+    language = Java;
+    // generated parser should create abstract syntax tree
+    output = AST;
 }
+
+//as the generated lexer will reside in org.meri.antlr_step_by_step.parsers 
+//package, we have to add package declaration on top of it
+@lexer::header {
+package org.meri.antlr_step_by_step.parsers;
+}
+
+//as the generated parser will reside in org.meri.antlr_step_by_step.parsers 
+//package, we have to add package declaration on top of it
+@parser::header {
+package org.meri.antlr_step_by_step.parsers;
+}
+
 
 /* LEXER RULES */
 
@@ -45,11 +61,7 @@ ENDDO: 'enddo';
 
 FOR : 'for';
 
-ID : 'id';
-
 TO : 'to';
-
-DO : 'do';
 
 BREAK : 'break';
 
@@ -78,28 +90,34 @@ MULT : '*';
 
 DIV : '/';
 
-EQ : '=';
- 
 NEQ : '<>';
-
-LESSER : '<';
 
 LESSEREQ : '<=';
 
-GREATER : '>';
-
 GREATEREQ : '>=';
+
+LESSER : '<';
+
+GREATER : '>';
 
 AND : '&';
 
 OR : '|';
 
-ASSIGN ':='; 
+ASSIGN 	: ':='; 
+
+EQ : '=';
 
 /* other lexical rules */
 ID : (('a'..'z')|('A'..'Z')) (('a'..'z')|('A'..'Z')|('0'..'9')|'_')*;
 
 INTLIT : ('1'..'9')('0'..'9')*;
+
+FIXEDPTLIT : INTLIT'.'('0'..'9')((('0'..'9')('0'..'9'))|(('0'..'9')?));
+
+LCOMMENT: '/*';
+
+RCOMMENT: '*/';
 
 WS  :   ( ' '
         | '\t'
@@ -107,6 +125,7 @@ WS  :   ( ' '
         | '\n'
         ) {$channel=HIDDEN;}
     ;
+
 
 /* PARSER RULES */
 eval: ID;
