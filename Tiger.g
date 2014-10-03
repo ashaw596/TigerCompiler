@@ -159,18 +159,13 @@ stat : val ASSIGN expr SEMI
 stat_2 : ENDIF SEMI | ELSE stat_seq ENDIF SEMI;
 
 opt_prefix : val ASSIGN | ;
-
-expression : const
-     	   | val
-     	   | LPAREN expression RPAREN;
-expr	: expression 
-	| expression binary_op expr_op;
+     	   
+expr : const expr_2
+	| val expr_2
+	| LPAREN expr RPAREN expr_2;
 	
-
-expr_op : expression | expression binary_op expr_op;
+expr_2 : binary_op expr | ;
      
-/* The following matches can never be matched: 2 */	
-
 const : INTLIT | FIXEDPTLIT;
 
 binary_op : PLUS 
