@@ -154,19 +154,20 @@ stat : val ASSIGN expr SEMI
      | opt_prefix ID LPAREN expr_list RPAREN SEMI
      | BREAK SEMI
      | RETURN expr SEMI
-     | block SEMI;
+     | block;
      
 stat_2 : ENDIF SEMI | ELSE stat_seq ENDIF SEMI;
 
 opt_prefix : val ASSIGN | ;
 
-expr : const expr_tail
-     | val expr_tail
-     | LPAREN expr RPAREN expr_tail;
+expr : const
+     | val
+     | LPAREN expr RPAREN
+     | expr_op;
      
-/* The following matches can never be matched: 2 */
-expr_tail : 
-	  | binary_op expr expr_tail;		
+expr_op : expr binary_op expr;		
+     
+/* The following matches can never be matched: 2 */	
 
 const : INTLIT | FIXEDPTLIT;
 
