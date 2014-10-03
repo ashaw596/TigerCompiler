@@ -160,12 +160,14 @@ stat_2 : ENDIF SEMI | ELSE stat_seq ENDIF SEMI;
 
 opt_prefix : val ASSIGN | ;
 
-expr : const
-     | val
-     | LPAREN expr RPAREN
-     | expr_op;
-     
-expr_op : expr binary_op expr;		
+expression : const
+     	   | val
+     	   | LPAREN expression RPAREN;
+expr	: expression 
+	| expression binary_op expr_op;
+	
+
+expr_op : expression | expression binary_op expr_op;
      
 /* The following matches can never be matched: 2 */	
 
