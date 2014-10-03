@@ -142,17 +142,21 @@ var_dec : VAR id_list COLON type_id optional_init;
 id_list : ID | ID COMMA id_list;
 optional_init : ASSIGN const | ;
 
-stat_seq : stat | stat stat_seq;
+stat_seq : stat stat_seq_2;
 
+stat_seq_2 : | stat;
+
+/* Non-LL decision */
 stat : val ASSIGN expr SEMI
-     | IF expr THEN stat_seq ENDIF SEMI
-     | IF expr THEN stat_seq ELSE stat_seq ENDIF SEMI
+     | IF expr THEN stat_seq stat_2
      | WHILE expr DO stat_seq ENDDO SEMI
      | FOR ID ASSIGN index_expr TO index_expr DO stat_seq ENDDO SEMI
      | opt_prefix ID LPAREN expr_list RPAREN SEMI
      | BREAK SEMI
      | RETURN expr SEMI
      | block SEMI;
+     
+stat_2 : ENDIF SEMI | ELSE stat_seq ENDIF SEMI;
 
 opt_prefix : val ASSIGN | ;
 
@@ -160,6 +164,7 @@ expr : const expr_tail
      | val expr_tail
      | LPAREN expr RPAREN expr_tail;
      
+/* The following matches can never be matched: 2 */
 expr_tail : 
 	  | binary_op expr expr_tail;		
 
@@ -182,9 +187,10 @@ expr_list : expr expr_list_tail | ;
 expr_list_tail : COMMA expr expr_list_tail | ;
 
 val : ID val_tail;
-val_tail : 
-	 | LBRACK index_expr RBRACK
-	 | LBRACK index_expr RBRACK LBRACK index_expr RBRACK;
+	 
+val_tail : | LBRACK index_expr RBRACK val_tail_2;
+
+val_tail_2 : | LBRACK index_expr RBRACK;
 
 index_expr : INTLIT index_expr_tail
 	   | ID index_expr_tail;
