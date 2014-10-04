@@ -5,6 +5,9 @@ options {
     language = Java;
     // generated parser should create abstract syntax tree
     output = AST;
+    
+    //k = 1; 
+    //backtrack = no; 
 }
 
 //as the generated lexer will reside in org.meri.antlr_step_by_step.parsers 
@@ -109,7 +112,7 @@ EQ : '=';
 /* other lexical rules */
 ID : (('a'..'z')|('A'..'Z')) (('a'..'z')|('A'..'Z')|('0'..'9')|'_')*;
 
-INTLIT : ('1'..'9')('0'..'9')*;
+INTLIT : (('1'..'9')('0'..'9')*)| '0';
 
 FIXEDPTLIT : INTLIT'.'('0'..'9')((('0'..'9')('0'..'9'))|(('0'..'9')?));
 
@@ -126,7 +129,7 @@ tiger_prog: type_dec_list funct_dec_list main_funct;
 funct_dec_list : | funct_dec funct_dec_list;
 funct_dec : ret_type FUNCTION ID LPAREN param_list RPAREN BEGIN block_list END SEMI;
 
-main_funct : VOID MAIN LPAREN RPAREN BEGIN block_list END;
+main_funct : VOID MAIN LPAREN RPAREN BEGIN block_list END SEMI;
 
 ret_type : type_id | VOID;
 
@@ -148,7 +151,7 @@ type : base_type
 type_id : base_type | ID;
 base_type : INT | FIXEDPT;
 
-var_dec : VAR id_list COLON type_id optional_init;
+var_dec : VAR id_list COLON type_id optional_init SEMI;
 id_list : ID | ID COMMA id_list;
 optional_init : ASSIGN constant | ;
 
