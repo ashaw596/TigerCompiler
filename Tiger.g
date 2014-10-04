@@ -147,11 +147,11 @@ stat_seq : stat stat_seq_2;
 stat_seq_2 : | stat;
 
 /* Non-LL decision */
-stat : val ASSIGN expr SEMI
+stat : val ASSIGN  (expr SEMI| ID LPAREN expr_list RPAREN SEMI) 
      | IF expr THEN stat_seq stat_2
      | WHILE expr DO stat_seq ENDDO SEMI
      | FOR ID ASSIGN index_expr TO index_expr DO stat_seq ENDDO SEMI
-     | opt_prefix ID LPAREN expr_list RPAREN SEMI
+     | ID LPAREN expr_list RPAREN SEMI
      | BREAK SEMI
      | RETURN expr SEMI
      | block;
@@ -161,13 +161,13 @@ stat_2 : ENDIF SEMI | ELSE stat_seq ENDIF SEMI;
 opt_prefix : val ASSIGN | ;
 
 expression : const
-     	   | val
-     	   | LPAREN expression RPAREN;
-expr	: expression 
-	| expression binary_op expr_op;
+     	   | val;
+     	   
+expr	: ((expression) ((binary_op expr_op)| ))
+	| LPAREN  expr RPAREN;
 	
 
-expr_op : expression | expression binary_op expr_op;
+expr_op : expression binary_op expr_op;
      
 /* The following matches can never be matched: 2 */	
 
