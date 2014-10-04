@@ -167,7 +167,7 @@ expr	: ((expression) ((binary_op expr_op)| ))
 	| LPAREN  expr RPAREN;
 	
 
-expr_op : expression binary_op expr_op;
+expr_op : expression ( binary_op expr_op |);
      
 /* The following matches can never be matched: 2 */	
 
