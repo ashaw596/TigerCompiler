@@ -6,8 +6,8 @@ options {
     // generated parser should create abstract syntax tree
     output = AST;
     
-    //k = 1; 
-    //backtrack = no; 
+    k = 1; 
+    backtrack = no; 
 }
 
 //as the generated lexer will reside in org.meri.antlr_step_by_step.parsers 
@@ -124,13 +124,19 @@ WS  :   ( ' '
     ;
 
 /* PARSER RULES */
-tiger_prog: type_dec_list funct_dec_list main_funct;
+tiger_prog: type_dec_list funct_dec_void main_funct;
+
+funct_dec_void	: VOID ( funct_dec_list_no_void |);
+funct_dec_list_no_void	: funct_dec_no_void ((funct_dec_not_void) VOID funct_dec_list_no_void |(VOID(|funct_dec_list_no_void)));
 
 funct_dec_list : | funct_dec funct_dec_list;
+funct_dec_not_void : ret_type_no_void funct_dec_no_void;
 funct_dec : ret_type FUNCTION ID LPAREN param_list RPAREN BEGIN block_list END SEMI;
 
-main_funct : VOID MAIN LPAREN RPAREN BEGIN block_list END SEMI;
+funct_dec_no_void : FUNCTION ID LPAREN param_list RPAREN BEGIN block_list END SEMI;
 
+main_funct : MAIN LPAREN RPAREN BEGIN block_list END SEMI;
+ret_type_no_void : type_id;	
 ret_type : type_id | VOID;
 
 param_list : param param_list_tail | ;
@@ -152,7 +158,7 @@ type_id : base_type | ID;
 base_type : INT | FIXEDPT;
 
 var_dec : VAR id_list COLON type_id optional_init SEMI;
-id_list : ID | ID COMMA id_list;
+id_list : ID (COMMA id_list)?;
 optional_init : ASSIGN constant | ;
 
 stat_seq : stat stat_seq_2;
@@ -160,11 +166,11 @@ stat_seq : stat stat_seq_2;
 stat_seq_2 : | stat;
 
 /* Non-LL decision */
-stat : val ASSIGN  (expr SEMI| ID LPAREN expr_list RPAREN SEMI) 
+
+stat : ID ((val_tail ASSIGN  (ID (expr_id_pre SEMI| LPAREN expr_list RPAREN SEMI) | expr_no_id SEMI)) |(LPAREN expr_list RPAREN SEMI))
      | IF expr THEN stat_seq stat_2
      | WHILE expr DO stat_seq ENDDO SEMI
      | FOR ID ASSIGN index_expr TO index_expr DO stat_seq ENDDO SEMI
-     | ID LPAREN expr_list RPAREN SEMI
      | BREAK SEMI
      | RETURN expr SEMI
      | block;
@@ -175,6 +181,11 @@ opt_prefix : val ASSIGN | ;
 
 expression : constant
      	   | val;
+expr_no_id : 	((expression_no_id) ((binary_op expr_op)| ))
+	   	|(LPAREN  expr RPAREN);
+expression_no_id : 	constant;
+expr_id_pre : ((expression_id_pre) ((binary_op expr_op)| ));
+expression_id_pre: val_tail;	
      	   
 expr	: ((expression) ((binary_op expr_op)| ))
 	| LPAREN  expr RPAREN;
