@@ -1,1 +1,1 @@
-"C:\Program Files\Java\jdk1.7.0_67\bin\java.exe" -jar "antlrworks-1.5.2-complete.jar"
+"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar "antlrworks-1.5.2-complete.jar"

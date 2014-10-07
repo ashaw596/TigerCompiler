@@ -129,7 +129,7 @@ tiger_prog: type_dec_list funct_dec_void main_funct;
 funct_dec_void	: VOID ( funct_dec_list_no_void |);
 funct_dec_list_no_void	: funct_dec_no_void ((funct_dec_not_void) VOID funct_dec_list_no_void |(VOID(|funct_dec_list_no_void)));
 
-funct_dec_list : | funct_dec funct_dec_list;
+//funct_dec_list : (funct_dec funct_dec_list)| ;
 funct_dec_not_void : ret_type_no_void funct_dec_no_void;
 funct_dec : ret_type FUNCTION ID LPAREN param_list RPAREN BEGIN block_list END SEMI;
 
