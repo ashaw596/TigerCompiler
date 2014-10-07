@@ -3,21 +3,38 @@ type TestArray = array[1000][14] of int;
 void function testFunction(var1: TestType, var2: int) 
  begin
   begin
-   printi(var1);
+   printi(var1 + var2);
   end;
  end;
+TestType function TypeFunction()
+ begin
+  begin
+   return 10;
+  end;
+ end;
+
 void main()
 begin
  begin
- var testInt, testStuff : testArray : 10;
- type ArrayInt = array [100] of int;
- var X, Y : ArrayInt := 10;
- var i, sum : int := 0;
- begin
- for i := 1 to 100 do
- sum := sum + X[i] * Y[i];
- enddo;
- printi(sum);
- end;
+  type ArrayInt = array [100] of int;
+  var testInt, testStuff : testArray := 10;
+  var X, Y : ArrayInt := 10;
+  var i, sum : int := 0;
+  begin
+   for i := 1 to 100 do
+   sum := sum + X[i] * Y[i];
+   enddo;
+  printi(sum);
+  end;
+  begin
+   var testVar : TestType := 0;
+   var testLimit : int;
+   testFunction(testVar, testStuff);
+   testLimit :=  TypeFunction();
+   while ((testVar<testLimit)) do
+    printi(testVarr);
+    testVarr := (testVar + 1);
+   enddo;   
+  end;
  end;
 end;

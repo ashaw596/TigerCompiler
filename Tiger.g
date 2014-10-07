@@ -127,7 +127,7 @@ WS  :   ( ' '
 tiger_prog: type_dec_list funct_dec_void main_funct EOF;
 
 funct_dec_void	: VOID ( funct_dec_list_no_void |);
-funct_dec_list_no_void	: funct_dec_no_void ((funct_dec_not_void) VOID funct_dec_list_no_void |(VOID(|funct_dec_list_no_void)));
+funct_dec_list_no_void	: funct_dec_no_void ((funct_dec_not_void) VOID (|funct_dec_list_no_void) |(VOID(|funct_dec_list_no_void)));
 
 //funct_dec_list : (funct_dec funct_dec_list)| ;
 funct_dec_not_void : ret_type_no_void funct_dec_no_void;
@@ -161,9 +161,7 @@ var_dec : VAR id_list COLON type_id optional_init SEMI;
 id_list : ID (COMMA id_list)?;
 optional_init : ASSIGN constant | ;
 
-stat_seq : stat stat_seq_2;
-
-stat_seq_2 : | stat;
+stat_seq : stat stat_seq?;
 
 /* Non-LL decision */
 
@@ -182,7 +180,7 @@ opt_prefix : val ASSIGN | ;
 expression : constant
      	   | val;
 expr_no_id : 	((expression_no_id) ((binary_op expr_op)| ))
-	   	|(LPAREN  expr RPAREN);
+	   	|(LPAREN expr RPAREN);
 expression_no_id : 	constant;
 expr_id_pre : ((expression_id_pre) ((binary_op expr_op)| ));
 expression_id_pre: val_tail;	
@@ -191,7 +189,7 @@ expr	: ((expression) ((binary_op expr_op)| ))
 	| LPAREN  expr RPAREN;
 	
 
-expr_op : expression ( binary_op expr_op |);
+expr_op : ((expression ( binary_op expr_op |) )| (LPAREN(expression ( binary_op expr_op |) RPAREN)));
      
 /* The following matches can never be matched: 2 */	
 
