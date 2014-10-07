@@ -1,0 +1,7 @@
+void main()
+begin
+ begin
+ var i, sum : int := 0;
+ printi(sum);
+ end;
+end;

@@ -124,7 +124,7 @@ WS  :   ( ' '
     ;
 
 /* PARSER RULES */
-tiger_prog: type_dec_list funct_dec_void main_funct;
+tiger_prog: type_dec_list funct_dec_void main_funct EOF;
 
 funct_dec_void	: VOID ( funct_dec_list_no_void |);
 funct_dec_list_no_void	: funct_dec_no_void ((funct_dec_not_void) VOID funct_dec_list_no_void |(VOID(|funct_dec_list_no_void)));
